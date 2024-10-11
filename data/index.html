@@ -1,15 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>ESP32 Web Server</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" href="data:,">
-  <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESP32 WEB SERVER</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="style.css">
+    <script defer src="script.js"></script>
 </head>
 <body>
-  <h1>ESP32 Web Server</h1>
-  <p>GPIO state: <strong> %STATE%</strong></p>
-  <p><a href="/on"><button class="button">ON</button></a></p>
-  <p><a href="/off"><button class="button button2">OFF</button></a></p>
+    <div class="container">
+        <h1>ESP32 DATA CENTER</h1>
+        <div class="sensor-data">
+            <p>Temperature: <span id="temp" class = "context">0</span>°C</p>
+            <p>Humidity: <span id="humid" class = "context">0</span>%</p>
+        </div>
+    </div>
 </body>
 </html>
