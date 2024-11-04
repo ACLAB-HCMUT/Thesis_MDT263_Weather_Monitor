@@ -1,9 +1,8 @@
 ﻿## Libraries:
 - ESPAsyncWebServer
-- SPIFFs
 - Adafruit_MQTT_Library
 - Publish/Subscribe Client
-- LiquidCrystal I2C
+- SPIFFs
 
 ## Manual:
 1. Enter Bootloader by Hold Boot -> Hold Reset -> Release Reset - > Release Boot.

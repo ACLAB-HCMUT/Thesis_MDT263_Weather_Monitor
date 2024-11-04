@@ -4,10 +4,8 @@ void setup(){
   Serial.begin(9600);
   wifi_init();
   server_init(); 
-  TaskDHT_init();
-  //LCD_init(); 
+  TaskTempHumid_init();
   mqtt_init();
-  
 }
 
 void loop(){

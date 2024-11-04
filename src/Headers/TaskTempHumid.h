@@ -1,11 +1,11 @@
-#ifndef TASKDHT_H
-#define TASKDHT_H
+#ifndef TASKTEMPHUMID_H
+#define TASKTEMPHUMID_H
 
 #include <../include/Global_config.h>
 
 extern uint8_t sensorRead[];
-void TaskDHT_init();
+void TaskTempHumid_init();
 extern float temperature;
 extern float humidity;
 
-#endif // TASKDHT_H
+#endif // TASKTEMPHUMID_H

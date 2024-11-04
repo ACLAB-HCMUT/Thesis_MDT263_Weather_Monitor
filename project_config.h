@@ -21,4 +21,6 @@
 // DEFINE RELAY
 #define TXD_RELAY 6
 #define RXD_RELAY 7
+#define SDA_PIN 11
+#define SCL_PIN 12
 #define BUFFER_SIZE 256 // DECREASE for low latency or INCREASE for more space || Range: [32, 1024]

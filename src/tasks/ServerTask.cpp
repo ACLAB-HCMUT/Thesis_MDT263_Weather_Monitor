@@ -1,15 +1,11 @@
 #include "../src/Headers/ServerTask.h"
 
-// Set LED GPIO
 const int ledPin = 10;
-
-// Stores LED state
 String ledState;
 
 // Create AsyncWebServer object on port 80
 AsyncWebServer server(80);
 
-// Replaces placeholder with LED state value (potential idea for other devices)
 String processor(const String& var){
   Serial.println(var);
   if(var == "STATE"){
@@ -35,31 +31,37 @@ void serverTask(void *pvParameters) {
   }
 
   // Route for root / web page
-  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
+  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request)
+  {
     request->send(SPIFFS, "/index.html", String(), false, processor);
   });
 
   // Route to load style.css file
-  server.on("/style.css", HTTP_GET, [](AsyncWebServerRequest *request){
+  server.on("/style.css", HTTP_GET, [](AsyncWebServerRequest *request)
+  {
     request->send(SPIFFS, "/style.css", "text/css");
   });
 
   // Route to load Java Script file
   server.on("/index.js", HTTP_GET, [](AsyncWebServerRequest *request)
-  { request->send(SPIFFS, "/script.js", "text/javascript"); });
+  { 
+    request->send(SPIFFS, "/script.js", "text/javascript");
+  });
   
   // Route to set GPIO to HIGH
-  server.on("/on", HTTP_GET, [](AsyncWebServerRequest *request){
+  server.on("/on", HTTP_GET, [](AsyncWebServerRequest *request)
+  {
     digitalWrite(ledPin, HIGH);    
     request->send(SPIFFS, "/index.html", String(), false, processor);
   });
-  
+
   // Route to set GPIO to LOW
-  server.on("/off", HTTP_GET, [](AsyncWebServerRequest *request){
+  server.on("/off", HTTP_GET, [](AsyncWebServerRequest *request)
+  {
     digitalWrite(ledPin, LOW);    
     request->send(SPIFFS, "/index.html", String(), false, processor);
   });
-
+  
   // Start server
   server.begin();
   vTaskDelete(NULL);  // Delete the task when done

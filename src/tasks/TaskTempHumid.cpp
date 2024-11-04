@@ -1,4 +1,4 @@
-#include "../src/Headers/TaskDHT.h"
+#include "../src/Headers/TaskTempHumid.h"
 
 HardwareSerial RS485Serial(1);
 uint8_t sensorRead[] = {0x01, 0x03, 0x00, 0x00, 0x00, 0x02, 0xc4, 0x0b};
@@ -66,7 +66,7 @@ void modbus485_sensor_read(void *pvParameters)
     }
 }
 
-void TaskDHT_init()
+void TaskTempHumid_init()
 {
     RS485Serial.begin(9600, SERIAL_8N1, RXD_RELAY, TXD_RELAY);
     xTaskCreate(modbus485_sensor_read, "READ_TEMP_HUMID", 4096, NULL, 1, NULL);
