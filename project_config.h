@@ -1,9 +1,0 @@
-// WIFI CREDENTIALS
-#define PROJECT_WIFI_SSID "ACLAB"
-#define PROJECT_WIFI_PASSWORD "ACLAB2023"
-
-// DEFINE MQTT
-#define MQTT_SERVER "io.adafruit.com"
-#define MQTT_PORT 1883
-#define IO_USERNAME "ThinhNguyen1801"
-#define IO_KEY ""
