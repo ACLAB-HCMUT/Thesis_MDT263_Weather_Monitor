@@ -1,11 +1,11 @@
 #include "Global_config.h"
 
 void setup(){
-  Serial.begin(9600);
+  Serial.begin(115200);
   wifi_init();
   server_init(); 
-  TaskTempHumid_init();
   mqtt_init();
+  TaskWindSpeed_init();
 }
 
 void loop(){
