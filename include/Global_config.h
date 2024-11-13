@@ -8,12 +8,12 @@
 #include "freertos/task.h"
 #include "Adafruit_MQTT.h"
 #include <PubSubClient.h>
-//#include "ElegantOTA.h"
 #include <Arduino.h>
 #include "SPIFFS.h"
 #include <Wire.h>
 #include "WiFi.h"
 #include <unistd.h>
+#include <LittleFS.h>
 
 // Import project configuration
 #include "../project_config.h"
@@ -25,7 +25,7 @@
 #include "../src/Headers/WifiTask.h"
 
 // Define Delay value and GPIO
-#define delay_relay 100
+#define delay_relay 300
 #define delay_temp 2000
 #define delay_connect 100
 #define delay_wifi 1000

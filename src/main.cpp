@@ -5,7 +5,8 @@ void setup(){
   wifi_init();
   server_init(); 
   mqtt_init();
-  TaskWindSpeed_init();
+  //TaskTempHumid_init(); // All sensors included in 1 Task
+  TaskSensor_init();
 }
 
 void loop(){

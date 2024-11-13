@@ -40,8 +40,6 @@ void TaskMQTT(void *pvParameters)
             Serial.println("MQTT Connected");
             client.subscribe("ThinhNguyen1801/feeds/temperature");
             client.subscribe("ThinhNguyen1801/feeds/humidity");
-            client.subscribe("ThinhNguyen1801/feeds/windspeed");
-            client.subscribe("ThinhNguyen1801/feeds/rainfall");
             String sendData = WiFi.localIP().toString();
             publishData("ip", sendData);
             Serial.println(sendData);
