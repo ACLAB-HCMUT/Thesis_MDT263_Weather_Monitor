@@ -1,5 +1,10 @@
 #include "../src/Headers/TaskModbus485.h"
-// Sensor: ES-WS-02 for Wind Speed and ES-Integrate-ODR1-2ThongSo for Temp/Humidity
+// Only 1 Modbus RS485 for all sensors
+// Sensor: ES-Integrate-ODR1 Temperature + Humidity
+// Sensor: ES-WS-02 Wind Speed
+// Sensor: ES-WS-04 Wind Direction
+
+// Sensor UART communication init
 HardwareSerial RS485Serial(1);
 
 // Wind Speed Sensor
@@ -11,6 +16,10 @@ float temperature = 0.0;
 float humidity = 0.0;
 uint8_t TemperatureRequest[] = {0x04, 0x03, 0x00, 0x01, 0x00, 0x01, 0xD5, 0x9F};
 uint8_t HumidityRequest[] = {0x04, 0x03, 0x00, 0x00, 0x00, 0x01, 0x84, 0x5F};
+
+// Wind Direction Sensor
+float windDirection = 0.0;
+uint8_t WindDirectionRequest[] = {0x03, 0x03, 0x00, 0x01, 0x00, 0x01, 0xD4, 0x28};
 
 //////////////////////////////////////////////////////////////////////////////////
 // Clears the response buffer before sending a new request
@@ -34,19 +43,33 @@ float ReadFromSensor(int responseSize, float divider) {
     int available = RS485Serial.available();
     if (available >= responseSize) {
         RS485Serial.readBytes(response, responseSize);
-        if (response[1] == 0x03) { // Check function code
+        if (response[1] == 0x03) {
             float value = (response[3] << 8) | response[4];
             return value / divider;
         }
     }
-    memset(response, 0, sizeof(response)); // Clear response for multivalue sensors
+    memset(response, 0, sizeof(response));
+    return -1;
+}
+
+float ReadWindDirection(int responseSize) {
+    byte response[responseSize];
+    int available = RS485Serial.available();
+    if (available >= responseSize) {
+        RS485Serial.readBytes(response, responseSize);
+        if (response[1] == 0x03) {
+            float value = (response[3] << 8) | response[4];
+            return value;
+        }
+    }
+    memset(response, 0, sizeof(response));
     return -1;
 }
 
 void ReadWindSpeed() {
     SendCommand(WindRequest, sizeof(WindRequest));
     vTaskDelay(100 / portTICK_PERIOD_MS);
-    float ws = ReadFromSensor(7, 10.0);  // Wind speed is divided by 10
+    float ws = ReadFromSensor(7, 10.0);
     if (ws >= 0) {
         windspeed = ws;
         Serial.print("Windspeed: ");
@@ -60,7 +83,7 @@ void ReadWindSpeed() {
 void ReadTemperature() {
     SendCommand(TemperatureRequest, sizeof(TemperatureRequest));
     vTaskDelay(100 / portTICK_PERIOD_MS);
-    float temp = ReadFromSensor(7, 10.0);  // Temperature is divided by 10
+    float temp = ReadFromSensor(7, 10.0);
     if (temp >= 0) {
         temperature = temp;
         Serial.print("Temperature: ");
@@ -74,7 +97,7 @@ void ReadTemperature() {
 void ReadHumidity() {
     SendCommand(HumidityRequest, sizeof(HumidityRequest));
     vTaskDelay(100 / portTICK_PERIOD_MS);
-    float hum = ReadFromSensor(7, 10.0);  // Humidity is divided by 10
+    float hum = ReadFromSensor(7, 10.0);
     if (hum >= 0) {
         humidity = hum;
         Serial.print("Humidity: ");
@@ -85,18 +108,34 @@ void ReadHumidity() {
     }
 }
 
+void ReadWindDirection() {
+    SendCommand(WindDirectionRequest, sizeof(WindDirectionRequest));
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+    float wd = ReadWindDirection(7);
+    if (wd >= 0) {
+        windDirection = wd;
+        Serial.print("Wind Direction: ");
+        Serial.println(windDirection);
+        publishData("windDirection", String(windDirection));
+    } else {
+        Serial.println("Failed to read wind direction from ES-WS-04");
+    }
+}
+
 void SensorRead(void *pvParameters) {
     while (true) {
         ReadWindSpeed();
-        vTaskDelay(2000 / portTICK_PERIOD_MS);
+        vTaskDelay(delay_sensor / portTICK_PERIOD_MS);
         ReadTemperature();
-        vTaskDelay(2000 / portTICK_PERIOD_MS);
+        vTaskDelay(delay_sensor / portTICK_PERIOD_MS);
         ReadHumidity();
-        vTaskDelay(2000 / portTICK_PERIOD_MS);
+        vTaskDelay(delay_sensor / portTICK_PERIOD_MS);
+        ReadWindDirection();
+        vTaskDelay(delay_sensor / portTICK_PERIOD_MS);
     }
 }
 
 void TaskSensor_init() {
-    RS485Serial.begin(9600, SERIAL_8N1, D5, D6); // TX = D3, RX = D4
+    RS485Serial.begin(9600, SERIAL_8N1, D5, D6); // RX = D5, TX = D6
     xTaskCreate(SensorRead, "SensorRead", 4096, NULL, 1, NULL);
 }

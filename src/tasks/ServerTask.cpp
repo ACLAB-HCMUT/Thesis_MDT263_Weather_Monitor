@@ -63,6 +63,7 @@ void serverTask(void *pvParameters) {
   });
   
   // Start server
+  ElegantOTA.begin(&server);
   server.begin();
   vTaskDelete(NULL);  // Delete the task when done
 }

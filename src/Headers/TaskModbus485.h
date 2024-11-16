@@ -2,8 +2,12 @@
 #define TASKMODBUS485_H
 
 #include <../include/Global_config.h>
-//void TaskTempHumid_init();
-//void TaskWindSpeed_init();
+
+extern float temperature;
+extern float humidity;
+extern float windspeed;
+extern float windDirection;
+
 void TaskSensor_init();
 
 #endif // TASKMODBUS485_H

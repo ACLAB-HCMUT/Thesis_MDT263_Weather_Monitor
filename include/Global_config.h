@@ -14,6 +14,7 @@
 #include "WiFi.h"
 #include <unistd.h>
 #include <LittleFS.h>
+#include <ElegantOTA.h>
 
 // Import project configuration
 #include "../project_config.h"
@@ -25,7 +26,7 @@
 #include "../src/Headers/WifiTask.h"
 
 // Define Delay value and GPIO
-#define delay_relay 300
+#define delay_sensor 2500
 #define delay_temp 2000
 #define delay_connect 100
 #define delay_wifi 1000

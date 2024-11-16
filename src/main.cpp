@@ -5,10 +5,9 @@ void setup(){
   wifi_init();
   server_init(); 
   mqtt_init();
-  //TaskTempHumid_init(); // All sensors included in 1 Task
-  TaskSensor_init();
+  TaskSensor_init(); // All sensors included in 1 Task
 }
 
 void loop(){
-  // Nothing to do here, FreeRTOS tasks handle the work
+  ElegantOTA.loop(); // Keeping the hardware ready for firmware update at any time
 }
