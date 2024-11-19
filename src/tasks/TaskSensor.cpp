@@ -3,6 +3,7 @@
 // Sensor: ES-Integrate-ODR1 Temperature + Humidity
 // Sensor: ES-WS-02 Wind Speed
 // Sensor: ES-WS-04 Wind Direction
+// Sensor: ES-RainF-01 Rainfall
 
 // Sensor UART communication init
 HardwareSerial RS485Serial(1);
@@ -20,6 +21,10 @@ uint8_t HumidityRequest[] = {0x04, 0x03, 0x00, 0x00, 0x00, 0x01, 0x84, 0x5F};
 // Wind Direction Sensor
 float windDirection = 0.0;
 uint8_t WindDirectionRequest[] = {0x03, 0x03, 0x00, 0x01, 0x00, 0x01, 0xD4, 0x28};
+
+// Rainfall Sensor
+float rainfallLevel = 0.0;
+uint8_t RainfallRequest[] = {0x07, 0x03, 0x00, 0x00, 0x00, 0x01, 0x84, 0x6C};
 
 //////////////////////////////////////////////////////////////////////////////////
 // Clears the response buffer before sending a new request
@@ -122,6 +127,20 @@ void ReadWindDirection() {
     }
 }
 
+void ReadRainfall() {
+    SendCommand(RainfallRequest, sizeof(RainfallRequest));
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+    float rain = ReadFromSensor(7, 10.0);
+    if (rain >= 0) {
+        rainfallLevel = rain;
+        Serial.print("Rainfall Level: ");
+        Serial.println(rainfallLevel);
+        publishData("rainfallLevel", String(rainfallLevel));
+    } else {
+        Serial.println("Failed to read rainfall level from ES-RainF-01");
+    }
+}
+
 void SensorRead(void *pvParameters) {
     while (true) {
         ReadWindSpeed();
@@ -131,6 +150,8 @@ void SensorRead(void *pvParameters) {
         ReadHumidity();
         vTaskDelay(delay_sensor / portTICK_PERIOD_MS);
         ReadWindDirection();
+        vTaskDelay(delay_sensor / portTICK_PERIOD_MS);
+        ReadRainfall();
         vTaskDelay(delay_sensor / portTICK_PERIOD_MS);
     }
 }

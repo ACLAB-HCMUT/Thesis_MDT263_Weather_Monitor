@@ -20,3 +20,4 @@
 1. Check if device's COM port can be detected
 2. Check MQTT IO_USERNAME and IO_KEY across the project
 3. Check Wifi credentials
+4. Check power supply for sensors

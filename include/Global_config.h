@@ -26,7 +26,7 @@
 #include "../src/Headers/WifiTask.h"
 
 // Define Delay value and GPIO
-#define delay_sensor 2500
+#define delay_sensor 1500
 #define delay_temp 2000
 #define delay_connect 100
 #define delay_wifi 1000
