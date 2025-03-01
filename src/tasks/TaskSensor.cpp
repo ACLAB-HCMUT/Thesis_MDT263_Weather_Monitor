@@ -144,13 +144,13 @@ void ReadRainfall() {
 void SensorRead(void *pvParameters) {
     while (true) {
         ReadWindSpeed();
-        vTaskDelay(delay_sensor / portTICK_PERIOD_MS);
+        //vTaskDelay(delay_sensor / portTICK_PERIOD_MS);
         ReadTemperature();
-        vTaskDelay(delay_sensor / portTICK_PERIOD_MS);
+        //vTaskDelay(delay_sensor / portTICK_PERIOD_MS);
         ReadHumidity();
-        vTaskDelay(delay_sensor / portTICK_PERIOD_MS);
+        //vTaskDelay(delay_sensor / portTICK_PERIOD_MS);
         ReadWindDirection();
-        vTaskDelay(delay_sensor / portTICK_PERIOD_MS);
+        //vTaskDelay(delay_sensor / portTICK_PERIOD_MS);
         ReadRainfall();
         vTaskDelay(delay_sensor / portTICK_PERIOD_MS);
     }
