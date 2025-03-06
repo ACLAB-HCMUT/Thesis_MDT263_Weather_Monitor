@@ -9,5 +9,5 @@ void setup(){
 }
 
 void loop(){
-  ElegantOTA.loop(); // Keeping the hardware ready for firmware update at any time
+  ElegantOTA.loop();
 }
