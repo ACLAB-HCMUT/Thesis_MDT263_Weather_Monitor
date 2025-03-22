@@ -62,37 +62,6 @@ void serverTask(void *pvParameters) {
     request->send(SPIFFS, "/index.html", String(), false, processor);
   });
   
-  // Handle OTA update
-  server.on(
-    "/update", HTTP_POST, 
-    [](AsyncWebServerRequest *request) {
-        AsyncWebServerResponse *response = request->beginResponse(200, "text/plain", (Update.hasError()) ? "FAIL" : "OK");
-        request->send(response);
-        delay(500);
-        ESP.restart();
-    }, 
-    [](AsyncWebServerRequest *request, String filename, size_t index, uint8_t *data, size_t len, bool final) {
-        if (!index) {
-            Serial.printf("Starting firmware update: %s\n", filename.c_str());
-            if (!Update.begin(UPDATE_SIZE_UNKNOWN)) {
-                Update.printError(Serial);
-            }
-        }
-
-        if (Update.write(data, len) != len) {
-            Update.printError(Serial);
-        }
-
-        if (final) {
-            if (Update.end(true)) {
-                Serial.println("Update complete!");
-            } else {
-                Update.printError(Serial);
-            }
-        }
-    }
-);
-
   // Start server
   server.begin();
   ElegantOTA.begin(&server);

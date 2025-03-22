@@ -1,0 +1,9 @@
+// WIFI CREDENTIALS
+#define PROJECT_WIFI_SSID ""
+#define PROJECT_WIFI_PASSWORD ""
+
+// DEFINE MQTT
+#define MQTT_SERVER "io.adafruit.com"
+#define MQTT_PORT 1883
+#define IO_USERNAME ""
+#define IO_KEY ""

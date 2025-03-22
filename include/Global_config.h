@@ -15,6 +15,8 @@
 #include <unistd.h>
 #include <LittleFS.h>
 #include <ElegantOTA.h>
+#include <SoftwareSerial.h>
+#include <TinyGPS++.h>
 
 // Import project configuration
 #include "../project_config.h"
@@ -24,12 +26,14 @@
 #include "../src/Headers/TaskMQTT.h"
 #include "../src/Headers/TaskModbus485.h"
 #include "../src/Headers/WifiTask.h"
+#include "../src/Headers/TaskGPS.h"
 
 // Define Delay value and GPIO
-#define delay_sensor 1500
+#define delay_sensor 15000 // set back to 1500 for better data collection efficiency + Adafruit has 30 request / min limitation
 #define delay_temp 2000
 #define delay_connect 100
 #define delay_wifi 1000
+#define delay_GPS 180000 // 30 minutes
 
 #define D3 6
 #define D4 7

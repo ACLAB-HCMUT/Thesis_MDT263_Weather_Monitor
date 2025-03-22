@@ -6,8 +6,11 @@ void setup(){
   server_init(); 
   mqtt_init();
   TaskSensor_init(); // All sensors included in 1 Task
+  GPS_init();
 }
 
 void loop(){
   ElegantOTA.loop();
+  if (ss.available() > 0)
+    gps.encode(ss.read());
 }
