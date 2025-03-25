@@ -19,12 +19,12 @@ void sendLocation(void *pvParameters)
 {
     while (true)
     {
-        if (WiFi.status() == WL_CONNECTED && client.connected() && X != 0 && Y != 0)
+        if (WiFi.status() == WL_CONNECTED && tb.connected() && X != 0 && Y != 0)
         {
             String locationStr = String(X, 7) + "," + String(Y, 7);
             Serial.print("Location: ");
             Serial.println(locationStr);
-            publishData("location", locationStr); 
+            tb.sendTelemetryData("location", locationStr);
             vTaskDelay(delay_GPS / portTICK_PERIOD_MS);
         }
         vTaskDelay(10000 / portTICK_PERIOD_MS); // send location every 10 seconds

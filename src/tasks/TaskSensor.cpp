@@ -27,8 +27,8 @@ float rainfallLevel = 0.0;
 uint8_t RainfallRequest[] = {0x07, 0x03, 0x00, 0x00, 0x00, 0x01, 0x84, 0x6C};
 
 //Ultrasonic Sensor
-float ultrasonicLevel = 0.0;
-uint8_t LevelRequest[] = {0x01, 0x03, 0x00, 0x00, 0x00, 0x02, 0xC4, 0x0B};
+//float ultrasonicLevel = 0.0;
+//uint8_t LevelRequest[] = {0x01, 0x03, 0x00, 0x00, 0x00, 0x02, 0xC4, 0x0B};
 //////////////////////////////////////////////////////////////////////////////////
 // Clears the response buffer before sending a new request
 void CleanResponseBuffer() {
@@ -82,7 +82,7 @@ void ReadWindSpeed() {
         windspeed = ws;
         Serial.print("Windspeed: ");
         Serial.println(windspeed);
-        publishData("windspeed", String(windspeed));
+        tb.sendTelemetryData("windspeed", windspeed);
     } else {
         Serial.println("Failed to read windspeed from ES-WS-04");
     }
@@ -96,7 +96,7 @@ void ReadTemperature() {
         temperature = temp;
         Serial.print("Temperature: ");
         Serial.println(temperature);
-        publishData("temperature", String(temperature));
+        tb.sendTelemetryData("temperature: ", temperature);
     } else {
         Serial.println("Failed to read temperature from ES-Integrate-ODR1-2ThongSo");
     }
@@ -110,7 +110,7 @@ void ReadHumidity() {
         humidity = hum;
         Serial.print("Humidity: ");
         Serial.println(humidity);
-        publishData("humidity", String(humidity));
+        tb.sendTelemetryData("humidity", humidity);
     } else {
         Serial.println("Failed to read humidity from ES-Integrate-ODR1-2ThongSo");
     }
@@ -124,7 +124,7 @@ void ReadWindDirection() {
         windDirection = wd;
         Serial.print("Wind Direction: ");
         Serial.println(windDirection);
-        publishData("windDirection", String(windDirection));
+        tb.sendTelemetryData("windDirection", windDirection);
     } else {
         Serial.println("Failed to read wind direction from ES-WS-04");
     }
@@ -138,12 +138,12 @@ void ReadRainfall() {
         rainfallLevel = rain;
         Serial.print("Rainfall Level: ");
         Serial.println(rainfallLevel);
-        publishData("rainfallLevel", String(rainfallLevel));
+        tb.sendTelemetryData("rainfallLevel", rainfallLevel);
     } else {
         Serial.println("Failed to read rainfall level from ES-RainF-01");
     }
-}
 
+}
 ////Check Sensor raw data in case Insight Sensor app doesn't work
 //void PrintHexArray(const byte *array, size_t size) {
 //    Serial.print("Raw Response: ");
@@ -191,6 +191,7 @@ void ReadRainfall() {
 //    }
 //}
 //
+
 void SensorRead(void *pvParameters) {
     while (true) {
         ReadWindSpeed();

@@ -2,8 +2,17 @@
 #define PROJECT_WIFI_SSID ""
 #define PROJECT_WIFI_PASSWORD ""
 
-// DEFINE MQTT
-#define MQTT_SERVER "io.adafruit.com"
+// DEFINE ADAFRUIT MQTT
+//#define MQTT_SERVER "io.adafruit.com"
+//#define MQTT_PORT 1883
+//#define IO_USERNAME ""
+//#define IO_KEY ""
+
+/////////////////////////
+
+// DEFINE THINGSBOARD MQTT
+#define MQTT_SERVER "app.coreiot.io"
 #define MQTT_PORT 1883
-#define IO_USERNAME ""
-#define IO_KEY ""
+#define ACCESS_TOKEN ""
+
+#define MAX_MESSAGE_SIZE 1024U

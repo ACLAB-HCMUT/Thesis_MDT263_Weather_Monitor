@@ -6,8 +6,6 @@
 #include "freertos/FreeRTOS.h"
 #include "HardwareSerial.h"
 #include "freertos/task.h"
-#include "Adafruit_MQTT.h"
-#include <PubSubClient.h>
 #include <Arduino.h>
 #include "SPIFFS.h"
 #include <Wire.h>
@@ -17,6 +15,10 @@
 #include <ElegantOTA.h>
 #include <SoftwareSerial.h>
 #include <TinyGPS++.h>
+#include <Update.h>
+#include <Arduino_MQTT_Client.h>
+#include <ArduinoJson.h>
+#include <ThingsBoard.h>
 
 // Import project configuration
 #include "../project_config.h"
@@ -29,7 +31,7 @@
 #include "../src/Headers/TaskGPS.h"
 
 // Define Delay value and GPIO
-#define delay_sensor 15000 // set back to 1500 for better data collection efficiency + Adafruit has 30 request / min limitation
+#define delay_sensor 3000
 #define delay_temp 2000
 #define delay_connect 100
 #define delay_wifi 1000

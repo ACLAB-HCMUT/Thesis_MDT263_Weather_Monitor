@@ -3,10 +3,8 @@
 
 #include "../include/Global_config.h"
 
-extern PubSubClient client;
+extern ThingsBoard tb;
 
 void mqtt_init();
-void reconnect();
-void publishData(String feed, String data);
 
 #endif /* TASKMQTT_H */

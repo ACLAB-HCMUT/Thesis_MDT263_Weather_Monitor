@@ -23,3 +23,4 @@
 5. Check if project_config.h is available for condition 2 and 3 above
 6. Check script.js inside data folder for device Webserver display (optional)
 7. Check Global_config.h and platformio.ini to make sure no library is missing
+8. Check Ultrasonic sensor related info before using as this is advanced feature
