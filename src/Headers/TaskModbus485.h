@@ -7,6 +7,8 @@ extern float temperature;
 extern float humidity;
 extern float windspeed;
 extern float windDirection;
+extern float rainfallLevel;
+//extern float ultrasonicLevel;
 
 void TaskSensor_init();
 

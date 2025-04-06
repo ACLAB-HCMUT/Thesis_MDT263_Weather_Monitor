@@ -84,7 +84,7 @@ void ReadWindSpeed() {
         Serial.println(windspeed);
         tb.sendTelemetryData("windspeed", windspeed);
     } else {
-        Serial.println("Failed to read windspeed from ES-WS-04");
+        Serial.println("Failed to read windspeed from ES-WS-02");
     }
 }
 

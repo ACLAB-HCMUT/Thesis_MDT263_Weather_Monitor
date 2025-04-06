@@ -24,3 +24,4 @@
 6. Check script.js inside data folder for device Webserver display (optional)
 7. Check Global_config.h and platformio.ini to make sure no library is missing
 8. Check Ultrasonic sensor related info before using as this is advanced feature
+9. In some cases project might not recognize extra libraries in LIB folder due to outdated GPU, it is recommended to check platformio.ini and manually configure the path by adding Library folder name to lib_deps
