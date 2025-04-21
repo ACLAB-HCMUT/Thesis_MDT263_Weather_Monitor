@@ -32,7 +32,7 @@
 
 // Define Delay value and GPIO
 #define delay_sensor 2000
-#define delay_temp 2000
+#define delay_temp 3000
 #define delay_connect 100
 #define delay_wifi 1000
 #define delay_GPS 180000 // 3 minutes
