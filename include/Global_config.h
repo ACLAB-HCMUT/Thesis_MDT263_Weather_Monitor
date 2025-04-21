@@ -31,7 +31,7 @@
 #include "../src/Headers/TaskGPS.h"
 
 // Define Delay value and GPIO
-#define delay_sensor 15000
+#define delay_sensor 2000
 #define delay_temp 2000
 #define delay_connect 100
 #define delay_wifi 1000

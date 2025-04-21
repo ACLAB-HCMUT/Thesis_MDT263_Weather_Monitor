@@ -96,7 +96,7 @@ void ReadTemperature() {
         temperature = temp;
         Serial.print("Temperature: ");
         Serial.println(temperature);
-        tb.sendTelemetryData("temperature: ", temperature);
+        tb.sendTelemetryData("temperature", temperature);
     } else {
         Serial.println("Failed to read temperature from ES-Integrate-ODR1-2ThongSo");
     }
