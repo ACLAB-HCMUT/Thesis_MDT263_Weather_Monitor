@@ -27,9 +27,10 @@ float rainfallLevel = 0.0;
 uint8_t RainfallRequest[] = {0x07, 0x03, 0x00, 0x00, 0x00, 0x01, 0x84, 0x6C};
 
 //Ultrasonic Sensor
-//float ultrasonicLevel = 0.0;
-//uint8_t LevelRequest[] = {0x01, 0x03, 0x00, 0x00, 0x00, 0x02, 0xC4, 0x0B};
-//////////////////////////////////////////////////////////////////////////////////
+float ultrasonicLevel = 0.0;
+uint8_t LevelRequest[] = {0x01, 0x03, 0x00, 0x00, 0x00, 0x02, 0xC4, 0x0B};
+
+
 // Clears the response buffer before sending a new request
 void CleanResponseBuffer() {
     size_t bytesToRead = RS485Serial.available();
@@ -144,53 +145,59 @@ void ReadRainfall() {
     }
 
 }
-////Check Sensor raw data in case Insight Sensor app doesn't work
-//void PrintHexArray(const byte *array, size_t size) {
-//    Serial.print("Raw Response: ");
-//    for (size_t i = 0; i < size; i++) {
-//        if (array[i] < 0x10) {
-//            Serial.print("0");
-//        }
-//        Serial.print(array[i], HEX);
-//        Serial.print(" ");
-//    }
-//    Serial.println();
-//}
+//Check Sensor raw data in case Insight Sensor app doesn't work
+void PrintHexArray(const byte *array, size_t size) {
+    Serial.print("Raw Response: ");
+    for (size_t i = 0; i < size; i++) {
+        if (array[i] < 0x10) {
+            Serial.print("0");
+        }
+        Serial.print(array[i], HEX);
+        Serial.print(" ");
+    }
+    Serial.println();
+}
 
-//float ReadUltraSonicLevel(int responseSize) {
-//    byte response[responseSize];
-//    int available = RS485Serial.available();
-//    if (available >= responseSize) {
-//        RS485Serial.readBytes(response, responseSize);
-//
-//        // Print the raw response in hexadecimal format
-//        //PrintHexArray(response, responseSize);
-//
-//        // Validate the response
-//        if (response[0] == 0x01 && response[1] == 0x03 && response[2] == 0x04) {
-//            uint32_t rawData =  (response[5] << 8) | response[6];
-//            return rawData / 10.0;
-//        }
-//    }
-//    memset(response, 0, sizeof(response));
-//    return -1;
-//}
-//
-//// Function to read the ultrasonic level
-//void ReadUltrasonicSensor() {
-//    SendCommand(LevelRequest, sizeof(LevelRequest));
-//    vTaskDelay(100 / portTICK_PERIOD_MS);
-//    float level = ReadUltraSonicLevel(9);
-//    if (level >= 0) {
-//        ultrasonicLevel = level;
-//        Serial.print("Ultrasonic Level: ");
-//        Serial.println(ultrasonicLevel);
-//        publishData("ultrasonicLevel", String(ultrasonicLevel));
-//    } else {
-//        Serial.println("Failed to read data from ES-ULS-02");
-//    }
-//}
-//
+float ReadUltraSonicLevel(int responseSize) {
+    byte response[responseSize];
+    int available = RS485Serial.available();
+    if (available >= responseSize) {
+        RS485Serial.readBytes(response, responseSize);
+
+        // Print the raw response in hexadecimal format
+        PrintHexArray(response, responseSize);
+
+        // Validate the response
+        if (response[0] == 0x01 && response[1] == 0x03 && response[2] == 0x04) {
+            uint32_t raw = 
+                (static_cast<uint32_t>(response[3]) << 24) |
+                (static_cast<uint32_t>(response[4]) << 16) |
+                (static_cast<uint32_t>(response[5]) << 8)  |
+                (static_cast<uint32_t>(response[6]));
+
+            float value;
+            memcpy(&value, &raw, sizeof(value));
+            return value;
+        }
+    }
+    memset(response, 0, sizeof(response));
+    return -1;
+}
+
+// Function to read the ultrasonic level
+void ReadUltrasonicSensor() {
+    SendCommand(LevelRequest, sizeof(LevelRequest));
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+    float level = ReadUltraSonicLevel(9);
+    if (level >= 0) {
+        ultrasonicLevel = level;
+        Serial.print("Ultrasonic Level: ");
+        Serial.println(ultrasonicLevel);
+        tb.sendTelemetryData("ultrasonicLevel", ultrasonicLevel);
+    } else {
+        Serial.println("Failed to read data from ES-ULS-02");
+    }
+}
 
 void SensorRead(void *pvParameters) {
     while (true) {
@@ -203,9 +210,9 @@ void SensorRead(void *pvParameters) {
         ReadWindDirection();
         //vTaskDelay(delay_sensor / portTICK_PERIOD_MS);
         ReadRainfall();
-        //vTaskDelay(delay_sensor / portTICK_PERIOD_MS);
-        //ReadUltrasonicSensor()
         vTaskDelay(delay_sensor / portTICK_PERIOD_MS);
+        ReadUltrasonicSensor();
+        vTaskDelay(10000 / portTICK_PERIOD_MS);
     }
 }
 

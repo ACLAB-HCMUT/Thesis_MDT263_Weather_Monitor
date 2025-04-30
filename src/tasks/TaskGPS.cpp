@@ -6,9 +6,6 @@ SoftwareSerial ss(D3, D4); //RXD_GPS = D4 , TXD_GPS = D3
 double X = 0;
 double Y = 0;
 
-double defaultLat = 10.880769208444697;
-double defaultLong = 106.80534337878345;
-
 void GPS_sensor()
 {
     if (gps.location.isUpdated())
@@ -27,17 +24,12 @@ void sendLocation(void *pvParameters)
             String locationStr = String(X, 7) + "," + String(Y, 7);
             Serial.print("Location: ");
             Serial.println(locationStr);
-            //tb.sendTelemetryData("location", locationStr);
+
             tb.sendTelemetryData("lat", X);
             tb.sendTelemetryData("long", Y);
-            vTaskDelay(delay_temp / portTICK_PERIOD_MS);
+            vTaskDelay(delay_GPS / portTICK_PERIOD_MS);
         }
-        else {
-            tb.sendTelemetryData("lat", defaultLat);
-            tb.sendTelemetryData("long", defaultLong);
-            vTaskDelay(delay_temp / portTICK_PERIOD_MS);
-        }
-        vTaskDelay(delay_GPS / portTICK_PERIOD_MS);
+        vTaskDelay(10000 / portTICK_PERIOD_MS);
     }
 }
 
